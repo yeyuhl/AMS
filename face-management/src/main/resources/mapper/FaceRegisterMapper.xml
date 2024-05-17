@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.zhengjie.register.mapper.FaceRegisterMapper">
+    <resultMap id="BaseResultMap" type="me.zhengjie.register.domain.FaceRegister">
+        <id column="person_id" property="personId"/>
+        <result column="name" property="name"/>
+        <result column="company" property="company"/>
+        <result column="image" property="image"/>
+        <result column="type" property="type"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        name, person_id, company, image, type
+    </sql>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from face_register
+        <where>
+            <if test="criteria.name != null">
+                and name = #{criteria.name}
+            </if>
+            <if test="criteria.personId != null">
+                and person_id = #{criteria.personId}
+            </if>
+            <if test="criteria.company != null">
+                and company = #{criteria.company}
+            </if>
+            <if test="criteria.type != null">
+                and type = #{criteria.type}
+            </if>
+        </where>
+        order by person_id desc
+    </select>
+</mapper>

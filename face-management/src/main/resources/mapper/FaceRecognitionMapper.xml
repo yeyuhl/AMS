@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.zhengjie.track.mapper.FaceRecognitionMapper">
+    <resultMap id="BaseResultMap" type="me.zhengjie.track.domain.FaceRecognition">
+        <id column="recognition_id" property="recognitionId"/>
+        <result column="person_id" property="personId"/>
+        <result column="time" property="time"/>
+        <result column="location" property="location"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        recognition_id, person_id, time, location
+    </sql>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from face_recognition
+        <where>
+            <if test="criteria.personId != null">
+                and person_id = #{criteria.personId}
+            </if>
+            <if test="criteria.location != null">
+                and location = #{criteria.location}
+            </if>
+            <if test="criteria.time != null and criteria.time.size() > 0">
+                AND time BETWEEN #{criteria.time[0]} AND #{criteria.time[1]}
+            </if>
+        </where>
+        order by recognition_id desc
+    </select>
+</mapper>
